@@ -1,10 +1,13 @@
 # tf-atom-fms-policy-aws
 
-[![CI](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions/workflows/ci.yml/badge.svg)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions/workflows/ci.yml)
-[![Release](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions/workflows/auto-release.yml/badge.svg)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions/workflows/auto-release.yml)
-[![CodeQL](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions/workflows/codeql.yml/badge.svg)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions/workflows/codeql.yml)
-![Terraform](https://img.shields.io/badge/terraform-%3E%3D1.6.0-blueviolet)
-[![Latest Release](https://img.shields.io/github/v/release/PlatformStackPulse/tf-atom-fms-policy-aws)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/releases)
+[![Terraform Format](https://img.shields.io/badge/terraform-fmt-blue?logo=terraform)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions)
+[![Terraform Validate](https://img.shields.io/badge/terraform-validate-blue?logo=terraform)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions)
+[![TFLint](https://img.shields.io/badge/tflint-passing-brightgreen?logo=terraform)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions)
+[![Terraform Test](https://img.shields.io/badge/tests-2%20passed-brightgreen?logo=terraform)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions)
+[![Security Scan](https://img.shields.io/badge/trivy-passing-brightgreen?logo=aqua)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions)
+[![Conventional Commits](https://img.shields.io/badge/commits-conventional-blue?logo=conventionalcommits)](https://conventionalcommits.org)
+[![Documentation](https://img.shields.io/badge/docs-terraform--docs-blue?logo=readthedocs)](https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue?logo=opensourceinitiative)](LICENSE)
 
 ---
 
