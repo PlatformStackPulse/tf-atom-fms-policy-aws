@@ -10,7 +10,7 @@
 
 ## Purpose
 
-Terraform atom module for a single AWS Firewall Manager Policy resource. Manages organization-wide firewall policies for WAF, Shield Advanced, Security Groups, Network Firewall, or DNS Firewall.
+Terraform atom module that manages a single AWS Firewall Manager (FMS) policy — an organization-wide firewall policy for WAF/WAFv2, Shield Advanced, Security Groups, Network Firewall, DNS Firewall, or third-party firewalls.
 
 ## Architecture
 
@@ -38,19 +38,36 @@ AWS Provider
 
 ## Features
 
-- Single AWS resource per module (atom pattern)
-- Context propagation via tf-label for consistent naming/tagging
-- Conditional creation with `enabled` flag
-- Composable - designed to be used within molecules
-- Fully tested with `terraform test`
-- Security scanned with Trivy
+- Manages a single `aws_fms_policy` resource (atom pattern — one resource per module)
+- Supports every FMS `policy_type` (WAF, WAFV2, SHIELD_ADVANCED, the SECURITY_GROUPS_* variants, NETWORK_FIREWALL, DNS_FIREWALL, THIRD_PARTY_FIREWALL, IMPORT_NETWORK_FIREWALL) with input validation
+- Account-scoping via `include_account_ids` / `exclude_account_ids` (rendered as `include_map` / `exclude_map`)
+- Resource targeting via `resource_type` or `resource_type_list`
+- Remediation controls: `remediation_enabled`, `delete_all_policy_resources`, `delete_unused_fm_managed_resources`, `exclude_resource_tags`
+- Consistent naming and tagging via tf-label (`module.this`); the policy name is the generated `id`
+- Conditional creation with the `enabled` flag (creates nothing when `false`)
+- Composable — designed to be consumed inside molecules
+- Unit-tested with `terraform test` (mock provider) and security-scanned with Trivy
 
 ## Usage
 
 ```hcl
 module "fms_policy" {
-  source = "git::https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws.git?ref=v1.1.0"
-  context = module.this.context
+  source = "git::https://github.com/PlatformStackPulse/tf-atom-fms-policy-aws.git?ref=v1.0.0"
+
+  namespace   = "eg"
+  stage       = "prod"
+  name        = "waf"
+
+  policy_type         = "WAFV2"
+  remediation_enabled = true
+
+  managed_service_data = jsonencode({
+    type                              = "WAFV2"
+    preProcessRuleGroups              = []
+    postProcessRuleGroups             = []
+    defaultAction                     = { type = "ALLOW" }
+    overrideCustomerWebACLAssociation = false
+  })
 }
 ```
 
@@ -123,3 +140,22 @@ module "fms_policy" {
 | <a name="output_policy_id"></a> [policy\_id](#output\_policy\_id) | The ID of the FMS Policy. |
 | <a name="output_policy_update_token"></a> [policy\_update\_token](#output\_policy\_update\_token) | The update token of the FMS Policy. |
 <!-- END_TF_DOCS -->
+
+## Tests
+
+Unit tests live in `tests/unit/` and run against a mock AWS provider, so they make
+no real AWS API calls and require no credentials. They assert on plan-known values
+(the tf-label `id`, resource count, input pass-throughs, and the `enabled` flag).
+
+```bash
+# Run the unit tests
+terraform init -backend=false
+terraform test -test-directory=tests/unit
+
+# Or via the Makefile
+make test-unit
+```
+
+Integration tests (if present, under `tests/integration/`) exercise real AWS APIs and
+require credentials; run them with `terraform test -test-directory=tests/integration`
+or `make test-integration`.
